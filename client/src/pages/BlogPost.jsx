@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Loader from "../components/Loader";
+import BaseUrl from "../config";
 
 const BlogPost = () => {
   const { id } = useParams();
@@ -12,7 +13,7 @@ const BlogPost = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/posts/${id}`);
+        const response = await axios.get(`${BaseUrl}/api/posts/${id}`);
         setPost(response.data);
       } catch (err) {
         setError(err.message);
