@@ -24,6 +24,18 @@ const Sidebar = ({ closeSidebar }) => {
         >
           Home
         </p>
+
+        <p
+          onClick={() => {
+            navigate("/eco-crafts");
+            closeSidebar();
+          }}
+          className="text-eco-green hover:underline
+           
+          cursor-pointer"
+        >
+          Ecocrafts
+        </p>
         <p
           onClick={() => {
             navigate("/about");
@@ -35,29 +47,6 @@ const Sidebar = ({ closeSidebar }) => {
         >
           About
         </p>
-        <p
-          onClick={() => {
-            scrollToRef(projectsRef);
-            closeSidebar();
-          }}
-          className="text-eco-green hover:underline
-           
-          cursor-pointer"
-        >
-          Ecocrafts
-        </p>
-        <p
-          onClick={() => {
-            navigate("/contact");
-            closeSidebar();
-          }}
-          className="text-eco-green hover:underline
-          
-          cursor-pointer"
-        >
-          Contact
-        </p>
-        
       </div>
     </div>
   );

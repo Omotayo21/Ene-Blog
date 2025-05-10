@@ -31,14 +31,15 @@ const BlogCard = ({ post }) => {
     const fullFormattedDate = `${month} ${ordinalDay} ${year}`;
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-transform hover:scale-[1.02] hover:shadow-lg">
-      <div className="h-48 overflow-hidden">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-transform hover:scale-[1.02] hover:shadow-lg h-full">
+    { post.image &&  <div className="h-48 overflow-hidden">
         <img
           src={post.image}
           alt={post.title}
           className="w-full h-full object-cover"
         />
       </div>
+}
       <div className="p-6">
         <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200 mb-2 break-words">
           {post.title}

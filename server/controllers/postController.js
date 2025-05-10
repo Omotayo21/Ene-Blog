@@ -1,46 +1,11 @@
 const Post = require("../models/postModel");
 
-exports.createPost = async (req, res) => {
-  try {
-    const { title, category, body, image } = req.body;
 
-    if (!title || !category || !body) {
-      return res
-        .status(400)
-        .json({ message: "Title, category, and body are required" });
-    }
-
-    const post = new Post({ title, category, body, image });
-   
- if (image) {
-   // Basic validation for Base64 string
-   if (image.startsWith("data:image")) {
-     post.image = image;
-   } else {
-     return res.status(400).json({ error: "Invalid image format" });
-   }
- }
-  const savedPost = await post.save();   
- res.status(201).json(savedPost);
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error creating post", error: error.message });
-  }
-};
 exports.getAllPosts = async (req, res) => {
   try {
     const posts = await Post.find().sort({ createdAt: -1 });
 
-    // Add full URL to image paths
-    const postsWithImageUrls = posts.map((post) => ({
-      ...post._doc,
-      image: post.image
-        ? `${req.protocol}://${req.get("host")}${post.image}`
-        : null,
-    }));
-
-    res.status(200).json(postsWithImageUrls);
+    res.status(200).json(posts);
   } catch (error) {
     res.status(500).json({
       message: "Error fetching posts",
@@ -58,15 +23,8 @@ exports.getPostById = async (req, res) => {
       return res.status(404).json({ message: "Post not found" });
     }
 
-    // Add full URL to the image path
-    const postWithImageUrl = {
-      ...post._doc,
-      image: post.image
-        ? `${req.protocol}://${req.get("host")}${post.image}`
-        : null,
-    };
-
-    res.status(200).json(postWithImageUrl);
+   
+    res.status(200).json(post);
   } catch (error) {
     res.status(500).json({
       message: "Server error",

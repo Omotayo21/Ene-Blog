@@ -35,91 +35,51 @@ const [postToDelete, setPostToDelete] = useState(null);
 
  
 
-  /*const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      if (isEditing) {
-        await axios.put(`/api/posts/${currentPostId}`, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
-      } else {
-        console.log(title, category, body, image);
-        await axios.post("http://localhost:5000/api/posts/create", {
-          title,
-          category,
-          body,
-          image,
-        });
-      }
 
-      // Refresh posts
-      const response = await axios.get("http://localhost:5000/api/posts");
-      setPosts(response.data);
-      resetForm();
-    } catch (err) {
-      console.error("Error saving post:", err);
-    }
-  };*/
+ const handlePhotoChange = (e) => {
+   const file = e.target.files?.[0];
+   if (!file) return;
 
-  const handlePhotoChange = (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+   // Increase size limit to 20MB
+   if (file.size > 20 * 1024 * 1024) {
+     alert("Image size should be less than 10MB");
+     return;
+   }
 
-    // Validate image size
-    if (file.size > 10 * 1024 * 1024) {
-      alert("Image size should be less than 2MB");
-      return;
-    }
-
-    // Create preview
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setImagePreview(reader.result);
-    };
-    reader.readAsDataURL(file);
-
-    setSelectedImage(file); // Store the File object
-  };
-   const handleSubmit = async (e) => {
-     e.preventDefault();
-     try {
-       const formData = new FormData();
-       formData.append("title", title);
-       formData.append("category", category);
-       formData.append("body", body);
-       if (selectedImage) {
-         formData.append("image", selectedImage);
-       }
-
-       if (isEditing) {
-         await axios.put(
-           `${BaseUrl}/api/posts/${currentPostId}`,
-           formData,
-           {
-             headers: {
-               "Content-Type": "multipart/form-data",
-             },
-           }
-         );
-       } else {
-         await axios.post(`${BaseUrl}/api/posts/create`, formData, {
-           headers: {
-             "Content-Type": "multipart/form-data",
-           },
-         });
-       }
-
-       // Refresh posts
-       const response = await axios.get(`${BaseUrl}/api/posts`);
-       setPosts(response.data);
-       resetForm();
-     } catch (err) {
-       console.error("Error saving post:", err.response?.data || err.message);
-       alert(err.response?.data?.message || "Error saving post");
-     }
+   // Convert to Base64
+   const reader = new FileReader();
+   reader.onload = () => {
+     setImagePreview(reader.result);
+     setSelectedImage(reader.result); // Store Base64 string
    };
+   reader.readAsDataURL(file);
+ };
+
+ const handleSubmit = async (e) => {
+   e.preventDefault();
+   try {
+     const postData = {
+       title,
+       category,
+       body,
+       image: selectedImage, // Send Base64 string directly
+     };
+
+     if (isEditing) {
+       await axios.put(`${BaseUrl}/api/posts/${currentPostId}`, postData);
+     } else {
+       await axios.post(`${BaseUrl}/api/posts/create`, postData);
+     }
+
+     // Refresh posts
+     const response = await axios.get(`${BaseUrl}/api/posts`);
+     setPosts(response.data);
+     resetForm();
+   } catch (err) {
+     console.error("Error saving post:", err.response?.data || err.message);
+     alert(err.response?.data?.message || "Error saving post");
+   }
+ };
   const handleEdit = (post) => {
     setTitle(post.title),
       setBody(post.body),
@@ -156,6 +116,7 @@ const handleConfirmDelete = async () => {
     setImagePreview("");
     setIsEditing(false);
     setCurrentPostId(null);
+    setLoading(true);
   };
 
   if (loading) return <Loader />;

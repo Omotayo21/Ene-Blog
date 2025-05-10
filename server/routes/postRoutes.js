@@ -3,57 +3,42 @@ const {  getAllPosts, deletePost, getPostById } = require ("../controllers/postC
 
 const router = express.Router();
 const Post = require("../models/postModel");
-const upload = require("../utils/upload");
 
-// Create post with image upload
-router.post("/create", upload.single("image"), async (req, res) => {
+router.post("/create", async (req, res) => {
   try {
-    const { title, category, body } = req.body;
+    const { title, category, body, image } = req.body;
 
-    if (!title || !category || !body) {
-      return res.status(400).json({
-        message: "Title, category, and body are required",
-      });
+    // Validate Base64 string
+    if (image && !image.startsWith("data:image")) {
+      return res.status(400).json({ error: "Invalid image format" });
     }
 
-    const post = new Post({
-      title,
-      category,
-      body,
-      image: req.file ? `/uploads/${req.file.filename}` : null,
-    });
-
+    const post = new Post({ title, category, body, image });
     const savedPost = await post.save();
     res.status(201).json(savedPost);
   } catch (error) {
-    res.status(500).json({
-      message: "Error creating post",
-      error: error.message,
+    res.status(500).json({ 
+      message: "Error creating post", 
+      error: error.message 
     });
   }
 });
 
-// Update post with image upload
-router.put("/:id", upload.single("image"), async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
-    const { title, category, body } = req.body;
-    const updateData = { title, category, body };
-
-    if (req.file) {
-      updateData.image = `/uploads/${req.file.filename}`;
-    }
-
+    const { title, category, body, image } = req.body;
+    
     const updatedPost = await Post.findByIdAndUpdate(
       req.params.id,
-      updateData,
+      { title, category, body, image },
       { new: true }
     );
-
+    
     res.json(updatedPost);
   } catch (error) {
-    res.status(500).json({
-      message: "Error updating post",
-      error: error.message,
+    res.status(500).json({ 
+      message: "Error updating post", 
+      error: error.message 
     });
   }
 });

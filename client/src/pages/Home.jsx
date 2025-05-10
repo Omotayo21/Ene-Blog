@@ -31,9 +31,7 @@ const Home = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-serif font-bold text-eco-green mb-4">
-          EcoChronicle
-        </h1>
+       
         <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
           Exploring nature's wonders and sharing insights for a sustainable
           future.

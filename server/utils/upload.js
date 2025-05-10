@@ -1,4 +1,4 @@
-const multer = require("multer");
+/*const multer = require("multer");
 const path = require("path");
 
 // Configure storage
@@ -28,4 +28,4 @@ const upload = multer({
   limits: { fileSize: 10 * 1024 * 1024 }, // 2MB limit
 });
 
-module.exports = upload;
+module.exports = upload;*/
