@@ -47,8 +47,7 @@ const Sidebar = ({ closeSidebar }) => {
         >
           About
         </p>
-<<<<<<< HEAD
-=======
+
         <p
           onClick={() => {
            navigate("/eco-crafts")
@@ -72,7 +71,7 @@ const Sidebar = ({ closeSidebar }) => {
           Contact
         </p>
         
->>>>>>> 2b21e536af9be5326faa5d1f336d8ee54b52dcf5
+
       </div>
     </div>
   );
