@@ -35,7 +35,7 @@ const EcoCrafts = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-serif font-bold text-eco-green mb-4">
+        <h1 className="text-4xl mt-2 font-serif font-bold text-eco-green mb-4">
           EcoCrafts
         </h1>
         <div className="flex justify-center mb-8">

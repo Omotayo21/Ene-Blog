@@ -32,7 +32,7 @@ const Home = () => {
     <div className="container mx-auto px-4 py-8">
       <div className="text-center mb-12">
        
-        <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+        <p className="text-xl mt-2 text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
           Exploring nature's wonders and sharing insights for a sustainable
           future.
         </p>
