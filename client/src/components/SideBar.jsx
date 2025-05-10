@@ -37,7 +37,7 @@ const Sidebar = ({ closeSidebar }) => {
         </p>
         <p
           onClick={() => {
-            scrollToRef(projectsRef);
+           navigate("/eco-crafts")
             closeSidebar();
           }}
           className="text-eco-green hover:underline
