@@ -48,28 +48,7 @@ const Sidebar = ({ closeSidebar }) => {
           About
         </p>
 
-        <p
-          onClick={() => {
-           navigate("/eco-crafts")
-            closeSidebar();
-          }}
-          className="text-eco-green hover:underline
-           
-          cursor-pointer"
-        >
-          Ecocrafts
-        </p>
-        <p
-          onClick={() => {
-            navigate("/contact");
-            closeSidebar();
-          }}
-          className="text-eco-green hover:underline
-          
-          cursor-pointer"
-        >
-          Contact
-        </p>
+        
         
 
       </div>
