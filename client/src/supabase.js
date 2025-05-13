@@ -14,7 +14,7 @@ export const uploadImage = async (file) => {
   const { data, error } = await supabase.storage
     .from("blog-images")
     .upload(fileName, file, {
-      cacheControl: "3600",
+      cacheControl: 'public, max-age=604800', 
       upsert: false,
     });
 
@@ -72,6 +72,7 @@ export const getPostById = async (id) => {
 };
 
 // Update Post
+// Update Post - Fixed version
 export const updatePost = async (id, { title, body, category, imageFile }) => {
   const updates = { title, body, category };
 
@@ -83,8 +84,9 @@ export const updatePost = async (id, { title, body, category, imageFile }) => {
       await supabase.storage.from("blog-images").remove([`posts/${fileName}`]);
     }
 
-    // Upload new image
-    updates.image_url = await uploadImage(imageFile);
+    // Upload new image and get full public URL
+    const imagePath = await uploadImage(imageFile);
+    updates.image_url = `${supabaseUrl}/storage/v1/object/public/blog-images/${imagePath}`;
   }
 
   const { data, error } = await supabase

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 const BlogCard = ({ post }) => {
-    const date = new Date(post.createdAt);
+    const date = new Date(post.created_at);
 
     const formattedDate = date.toLocaleDateString("en-US", {
       year: "numeric",
@@ -35,9 +35,10 @@ const BlogCard = ({ post }) => {
       {post.image_url && (
         <div className="h-48 overflow-hidden">
           <img
-            src={post.image_url}
-            alt={post.title}
             loading="lazy"
+            src={`${post.image_url}?width=800&quality=60`}
+            alt={post.title}
+          
             decoding="async"
             style={{ contentVisibility: "auto" }}
             className="w-full h-full object-cover"
