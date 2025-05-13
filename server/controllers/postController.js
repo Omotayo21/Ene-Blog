@@ -2,16 +2,20 @@ const Post = require("../models/postModel");
 
 
 exports.getAllPosts = async (req, res) => {
-  try {
-    const posts = await Post.find().sort({ createdAt: -1 });
+   try {
+    const posts = await Post.find()
+     .select("-body -__v") // Exclude heavy fields
+     .sort({ createdAt: -1 })
+     .lean();
 
-    res.status(200).json(posts);
-  } catch (error) {
-    res.status(500).json({
-      message: "Error fetching posts",
-      error: error.message,
-    });
-  }
+  
+   res.status(200).json(posts); 
+} catch (error) {
+     res.status(500).json({
+       message: "Server error",
+       error: error.message,
+     });
+   }
 };
 
 exports.getPostById = async (req, res) => {

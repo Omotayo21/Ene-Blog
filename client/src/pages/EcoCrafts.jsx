@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import BlogCard from "../components/BlogCard";
-import axios from "axios";
+import {getAllPosts} from "../supabase";
 import Loader from "../components/Loader";
-import BaseUrl from "../config";
+
 
 const EcoCrafts = () => {
   const [posts, setPosts] = useState([]);
@@ -12,9 +12,9 @@ const EcoCrafts = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await axios.get(`${BaseUrl}/api/posts`);
+        const response = await getAllPosts();;
         
-          const filteredPosts = response.data.filter(
+          const filteredPosts = response.filter(
             (post) => post.category.toLowerCase() === "ecocrafts"
           );
           setPosts(filteredPosts);
@@ -54,7 +54,7 @@ const EcoCrafts = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {posts.map((post) => (
-            <BlogCard key={post._id} post={post} />
+            <BlogCard key={post.id} post={post} />
           ))}
         </div>
       )}

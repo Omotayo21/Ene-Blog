@@ -1,4 +1,4 @@
 // src/config.js
-const BaseUrl = "https://apiecochronicles.vercel.app";
-//const BaseUrl = "http://localhost:5000";
+//const BaseUrl = "https://apiecochronicles.vercel.app";
+const BaseUrl = ""
 export default BaseUrl;

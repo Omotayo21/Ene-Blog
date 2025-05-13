@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Loader from "../components/Loader";
-import BaseUrl from "../config";
+import { getPostById } from "../supabase";
 
 const BlogPost = () => {
   const { id } = useParams();
@@ -13,8 +13,8 @@ const BlogPost = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await axios.get(`${BaseUrl}/api/posts/${id}`);
-        setPost(response.data);
+        const post = await getPostById(id);
+        setPost(post);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -32,7 +32,7 @@ const BlogPost = () => {
   if (error)
     return <div className="text-center py-12 text-red-500">Error: {error}</div>;
   if (!post) return <div className="text-center py-12">Post not found</div>;
-const date = new Date(post.createdAt);
+const date = new Date(post.created_at);
 
 const formattedDate = date.toLocaleDateString("en-US", {
   year: "numeric",
@@ -70,13 +70,13 @@ const fullFormattedDate = `${month} ${ordinalDay} ${year}`;
         {fullFormattedDate}
       </span>
       <article className="bg-white dark:bg-gray-700 rounded-lg shadow-md overflow-hidden">
-        <div className="h-96 overflow-hidden">
+       {post.image_url && <div className="h-96 overflow-hidden">
           <img
-            src={post.image}
+            src={post.image_url}
             alt={post.title}
             className="w-full h-full object-cover"
           />
-        </div>
+        </div> }
 
         <div className="p-8">
           

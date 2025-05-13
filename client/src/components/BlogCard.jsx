@@ -32,14 +32,18 @@ const BlogCard = ({ post }) => {
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-transform hover:scale-[1.02] hover:shadow-lg h-full">
-    { post.image &&  <div className="h-48 overflow-hidden">
-        <img
-          src={post.image}
-          alt={post.title}
-          className="w-full h-full object-cover"
-        />
-      </div>
-}
+      {post.image_url && (
+        <div className="h-48 overflow-hidden">
+          <img
+            src={post.image_url}
+            alt={post.title}
+            loading="lazy"
+            decoding="async"
+            style={{ contentVisibility: "auto" }}
+            className="w-full h-full object-cover"
+          />
+        </div>
+      )}
       <div className="p-6">
         <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200 mb-2 break-words">
           {post.title}
@@ -51,7 +55,7 @@ const BlogCard = ({ post }) => {
           {post.body.substring(0, 150)}...
         </p>
         <Link
-          to={`/post/${post._id}`}
+          to={`/post/${post.id}`}
           className="inline-flex items-center text-eco-green font-medium hover:text-eco-brown transition"
         >
           Read More

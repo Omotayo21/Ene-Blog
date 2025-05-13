@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import BlogCard from "../components/BlogCard";
 import axios from "axios";
 import Loader from "../components/Loader";
-import BaseUrl from "../config";
+//import BaseUrl from "../config";
+import { getAllPosts } from "../supabase";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
@@ -12,8 +13,8 @@ const Home = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await axios.get(`${BaseUrl}/api/posts`);
-        setPosts(response.data);
+       const posts = await getAllPosts();
+       setPosts(posts);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -45,7 +46,7 @@ const Home = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {posts.map((post) => (
-            <BlogCard key={post._id} post={post} />
+            <BlogCard key={post.id} post={post} />
           ))}
         </div>
       )}

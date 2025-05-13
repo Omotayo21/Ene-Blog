@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Loader from "../components/Loader";
-import BaseUrl from "../config";
+import {
+  getAllPosts,
+  createPost,
+  updatePost,
+  deletePost,
+} from "../supabase";
 
 const Admin = () => {
   const [posts, setPosts] = useState([]);
@@ -11,7 +16,7 @@ const Admin = () => {
   const [loading, setLoading] = useState(true);
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
-  const [category, setCategory] = useState("Sustainability");
+  const [category, setCategory] = useState("EchoChronicles");
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState("");
 const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -21,8 +26,8 @@ const [postToDelete, setPostToDelete] = useState(null);
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await axios.get(`${BaseUrl}/api/posts`);
-        setPosts(response.data);
+        const posts = await getAllPosts();
+        setPosts(posts);
       } catch (err) {
         console.error("Error fetching posts:", err);
       } finally {
@@ -37,43 +42,30 @@ const [postToDelete, setPostToDelete] = useState(null);
 
 
  const handlePhotoChange = (e) => {
-   const file = e.target.files?.[0];
-   if (!file) return;
-
-   // Increase size limit to 20MB
-   if (file.size > 20 * 1024 * 1024) {
-     alert("Image size should be less than 10MB");
-     return;
-   }
-
-   // Convert to Base64
-   const reader = new FileReader();
-   reader.onload = () => {
-     setImagePreview(reader.result);
-     setSelectedImage(reader.result); // Store Base64 string
-   };
-   reader.readAsDataURL(file);
+    setImagePreview(URL.createObjectURL(e.target.files[0]))
+   setSelectedImage(e.target.files[0]); // Store File object directly
  };
 
  const handleSubmit = async (e) => {
    e.preventDefault();
+   setLoading(true);
    try {
-     const postData = {
-       title,
-       category,
-       body,
-       image: selectedImage, // Send Base64 string directly
-     };
+     const postData = { title, body, category };
 
      if (isEditing) {
-       await axios.put(`${BaseUrl}/api/posts/${currentPostId}`, postData);
+       await updatePost(currentPostId, {
+         ...postData,
+         imageFile: selectedImage,
+       });
      } else {
-       await axios.post(`${BaseUrl}/api/posts/create`, postData);
+       await createPost({
+         ...postData,
+         imageFile: selectedImage,
+       });
      }
 
-     // Refresh posts
-     const response = await axios.get(`${BaseUrl}/api/posts`);
-     setPosts(response.data);
+     setPosts(await getAllPosts());
+     setLoading(false);
      resetForm();
    } catch (err) {
      console.error("Error saving post:", err.response?.data || err.message);
@@ -86,8 +78,8 @@ const [postToDelete, setPostToDelete] = useState(null);
       setCategory(post.category),
       setSelectedImage(null);
 
-    setImagePreview(post.image || "");
-    setCurrentPostId(post._id);
+    setImagePreview(post.image_url || "");
+    setCurrentPostId(post.id);
     setIsEditing(true);
   };
 
@@ -96,18 +88,17 @@ const confirmDelete = (id) => {
   setShowDeleteModal(true);
 };
 
-const handleConfirmDelete = async () => {
-  try {
-    await axios.delete(`${BaseUrl}/api/posts/${postToDelete}`);
-    setPosts(posts.filter((post) => post._id !== postToDelete));
-    setShowDeleteModal(false);
-    setPostToDelete(null);
-  } catch (err) {
-    console.error("Error deleting post:", err);
-  }
-};
 
 
+ const handleConfirmDelete = async () => {
+   try {
+     await deletePost(postToDelete);
+     setPosts(posts.filter((post) => post.id !== postToDelete));
+     setShowDeleteModal(false);
+   } catch (err) {
+     console.error("Error deleting post:", err);
+   }
+ };
   const resetForm = () => {
     setTitle("");
     setBody("");
@@ -116,7 +107,7 @@ const handleConfirmDelete = async () => {
     setImagePreview("");
     setIsEditing(false);
     setCurrentPostId(null);
-    setLoading(true);
+    
   };
 
   if (loading) return <Loader />;
@@ -259,11 +250,11 @@ const handleConfirmDelete = async () => {
           ) : (
             <div className="space-y-4">
               {posts.map((post) => (
-                <div key={post._id} className="border-b pb-4 last:border-b-0">
+                <div key={post.id} className="border-b pb-4 last:border-b-0">
                   <h3 className="font-bold text-lg break-words">{post.title}</h3>
                   <p className="text-sm text-gray-500 mb-2">
                     {post.category} •{" "}
-                    {new Date(post.createdAt).toLocaleDateString()}
+                    {new Date(post.created_at).toLocaleDateString()}
                   </p>
                   <div className="flex space-x-2">
                     <button
@@ -273,7 +264,7 @@ const handleConfirmDelete = async () => {
                       Edit
                     </button>
                     <button
-                      onClick={() => confirmDelete(post._id)}
+                      onClick={() => confirmDelete(post.id)}
                       className="text-sm bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
                     >
                       Delete
