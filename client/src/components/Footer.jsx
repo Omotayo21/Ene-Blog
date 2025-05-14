@@ -17,12 +17,12 @@ const Footer = () => {
             </a>
             <p>
               Lets connect : For collaborations, features or just a good convo.
-              Reach me at
+              Reach me at  {" "}
               <a
                 href="mailto:sustainablyaware@gmail.com"
                 className="hover:text-blue-700 hover:underline"
               >
-                sustainablyaware@gmail.com
+                   sustainablyaware@gmail.com
               </a>
             </p>
      
