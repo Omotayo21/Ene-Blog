@@ -17,9 +17,7 @@ const Navbar = () => {
     <>
       <nav className="bg-eco-green text-white shadow-lg sm:hidden md:hidden lg:block">
         <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-          <Link to="/" className="flex items-center space-x-2">
-            <span className="text-2xl font-serif font-bold">Logo</span>
-          </Link>
+          <img src="/logo.png" alt="logo" className="w-40 h-12 object-cover" />
 
           <div className="flex items-center space-x-6">
             {/* Mobile Search Button */}
@@ -49,10 +47,16 @@ const Navbar = () => {
               </form>
             </div>
 
-            <Link to="/" className="hover:text-eco-light transition">
+            <Link
+              to="/"
+              className=" hover:bg-eco-teal px-4 py-2 hover:text-eco-light transition"
+            >
               Home
             </Link>
-            <Link to="/eco-crafts" className="hover:text-eco-light transition">
+            <Link
+              to="/eco-crafts"
+              className=" hover:bg-eco-teal px-4 py-2 hover:text-eco-light transition"
+            >
               Eco-crafts
             </Link>
             <Link

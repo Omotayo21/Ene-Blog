@@ -25,26 +25,33 @@ function App() {
    return (
      <Router>
        <div className="min-h-screen flex flex-col  dark:bg-gray-900 dark:text-white">
-         <Navbar  />
-        <div className="sm:w-screen h-12 bg-eco-green mb-4 fixed z-20 lg:hidden ">
-                <List
-                  onClick={openSideBar}
-                  size={24}
-                  className="fixed left-2 z-20  text-white dark:text-black top-2"
-                />
+         <Navbar />
+         <div className="sm:w-screen h-12 bg-eco-green mb-4 fixed z-20 lg:hidden ">
+           <List
+             onClick={openSideBar}
+             size={24}
+             className="fixed left-2 z-20  text-white dark:text-black top-2"
+           />
 
-             <div>
-              <h1 className="text-3xl font-bold text-center">Logo</h1>  
-             </div>
+           <div className="flex flex-row items-center justify-center">
+             <img
+               src="/logo.png"
+               alt="logo"
+               className="w-40 h-12 object-cover "
+             />
+           </div>
 
-                <MagnifyingGlass size={24} className="fixed text-white right-2 z-20 dark:text-black top-2" /> 
-              </div>
+           <MagnifyingGlass
+             size={24}
+             className="fixed text-white right-2 z-20 dark:text-black top-2"
+           />
+         </div>
 
          {dropdown && <Sidebar closeSidebar={closeSidebar} />}
          <main className="flex-grow mt-4">
            <Routes>
              <Route path="/" element={<Home />} />
-             <Route path="/eco-crafts" element={<EcoCrafts   />} />
+             <Route path="/eco-crafts" element={<EcoCrafts />} />
              <Route path="/post/:id" element={<BlogPost />} />
              <Route path="/ene/admin" element={<Admin />} />
              <Route path="/about" element={<About />} />
