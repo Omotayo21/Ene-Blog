@@ -6,9 +6,9 @@ const About = () => {
     <div className="max-w-4xl mx-auto px-4 py-12">
       {/* Profile Circle Placeholder */}
       <div className="flex justify-center mb-8">
-        <div className="w-64 h-64 rounded-full  flex items-center justify-center text-white text-4xl font-bold">
+       {/* <div className="w-64 h-64 rounded-full  flex items-center justify-center text-white text-4xl font-bold">
           <img src="/ene.jpeg" alt="ene" className="object-cover w-64 h-64 rounded-full" />
-        </div>
+        </div> */}
       </div>
 
       {/* About Content */}

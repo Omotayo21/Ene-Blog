@@ -40,9 +40,9 @@ const EcoCrafts = () => {
         </h1>
         <div className="flex justify-center mb-8">
           <img
-            src="/eco-crafts.jpg"
+            src="/ecocrafts.PNG"
             alt="EcoCrafts"
-            className="lg:w-[40rem] h-64 "
+            className="lg:w-[60rem] h-72 "
           />
         </div>
       </div>

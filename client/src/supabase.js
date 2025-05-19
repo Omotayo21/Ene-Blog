@@ -114,3 +114,13 @@ export const deletePost = async (id) => {
 
   if (error) throw error;
 };
+// Add this to your supabase.js
+export const searchPosts = async (query) => {
+  const { data, error } = await supabase
+    .from('posts')
+    .select('*')
+    .or(`title.ilike.%${query}%,body.ilike.%${query}%`);
+
+  if (error) throw error;
+  return data;
+};

@@ -1,18 +1,22 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import {MagnifyingGlass} from 'phosphor-react'
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const handleSearch = (e) => {
     e.preventDefault();
-    // Implement search logic or redirect to search results page
-    console.log("Searching for:", searchQuery);
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+      setSearchQuery("");
+      setIsSearchOpen(false);
+    }
   };
-
   return (
     <>
       <nav className="bg-eco-green text-white shadow-lg sm:hidden md:hidden lg:block">
